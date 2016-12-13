@@ -1,0 +1,7 @@
+---
+applications:
+- name: catopia-frontend 
+  buildpack: staticfile_buildpack
+  memory: 256m
+  env:
+    FORCE_HTTPS: true
