@@ -1,4 +1,4 @@
 #!/bin/bash
-name="frontend"
+name="backend"
 kill $(cat $name.pid)
 rm $name.pid

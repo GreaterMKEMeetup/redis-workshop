@@ -1,4 +1,4 @@
 #!/bin/bash
-name="frontend"
+name="redis"
 kill $(cat $name.pid)
 rm $name.pid
