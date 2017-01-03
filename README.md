@@ -16,7 +16,7 @@ To keep development environments consistent, this workshop uses Vagrant.  Vagran
 
 # Setup
 
-Pull the project code, and run Vagrant.  This will take awhile as it downloads the ubuntu/xenial64 image, and redis server.
+Pull the project code, and run Vagrant.  This will take awhile as it downloads the ubuntu/xenial64 image, Java, and Redis.
 ```bash
 cd ~/workspace
 git clone https://github.com/GreaterMKEMeetup/redis-workshop.git 
