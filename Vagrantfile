@@ -75,8 +75,15 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
+    
     apt-get -y install python=2.7.11-1
+    
     apt-get -y install openjdk-8-jdk
+    
     apt-get -y install redis-server=2:3.0.6-1
+    echo "include /vagrant/redis-overrides.conf" >> /etc/redis/redis.conf
+
+    ./run-all.sh
+
   SHELL
 end

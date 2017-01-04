@@ -1,4 +1,2 @@
 #!/bin/bash
-ps -p $(cat frontend.pid)
-ps -p $(cat backend.pid)
-ps -p $(cat redis.pid)
+sudo netstat -plnt | grep -E 'redis-server|python|java'

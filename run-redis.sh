@@ -1,2 +1,2 @@
 #!/bin/bash
-redis-server /vagrant/redis.conf &
+sudo service redis-server start
