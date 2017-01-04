@@ -19,7 +19,8 @@ To keep development environments consistent, this workshop uses Vagrant.  Vagran
 Pull the project code, and run Vagrant.  This will take awhile as it downloads the ubuntu/xenial64 image, Java, and Redis.
 ```bash
 $ cd ~/workspace
-$ git clone https://github.com/GreaterMKEMeetup/redis-workshop.git 
+$ git clone https://github.com/GreaterMKEMeetup/redis-workshop.git
+$ cd redis-workshop
 $ vagrant up
 ```
 Note:  Vagrant automatically syncs the directory where the Vagrant file is on the host machine with the guest machine's /vagrant directory.  All run, kill, and status scripts must be run from within the virtual machine.
@@ -27,6 +28,7 @@ Note:  Vagrant automatically syncs the directory where the Vagrant file is on th
 ## Verify
 Log into the virtual machine, and run the stack-status.sh script.  You should see the following.
 ```bash
+$ cd ~/workspace/redis-workshop
 $ vagrant ssh
 ubuntu@ubuntu-xenial:/vagrant$ cd /vagrant
 ubuntu@ubuntu-xenial:/vagrant$ ./stack-status.sh
@@ -50,7 +52,7 @@ You are all set to develop locally!
 
 # Cleanup
 ```bash
-$ cd ~/redis-workshop
+$ cd ~/workspace/redis-workshop
 $ vagrant destroy
 $ cd ..
 $ rm -rf redis-workshop
