@@ -1,4 +1,4 @@
 #!/bin/bash
 name="backend"
-kill $(cat $name.pid)
-rm $name.pid
+sudo kill $(cat $name.pid)
+sudo rm $name.pid

@@ -1,4 +1,5 @@
 #!/bin/bash
+#!/bin/bash
 name="redis"
-kill $(cat $name.pid)
-rm $name.pid
+sudo kill $(cat $name.pid)
+sudo rm $name.pid
