@@ -45,6 +45,14 @@ The Vagrant file maps the following ports from the guest machine to the host mac
 The Catopia website should be displayed.
 
 ----
-Congrats, you are all set to develop locally!
+# Good Job!
+You are all set to develop locally!
 
+# Cleanup
+```bash
+$ cd ~/redis-workshop
+$ vagrant destroy
+$ cd ..
+$ rm -rf redis-workshop
+```
 
