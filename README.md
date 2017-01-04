@@ -26,6 +26,8 @@ Note:  Vagrant automatically syncs the directory where the Vagrant file is on th
 
 ## Verify
 Log into the virtual machine, and run the stack-status.sh script.  You should see the following.
+Note, the java process may take a minute to come up, as it must download all the dependencies before it starts.
+
 ```bash
 $ vagrant ssh
 ubuntu@ubuntu-xenial:/vagrant$ cd /vagrant
@@ -40,7 +42,7 @@ If any of the above ports don't have a service listening on them, something went
 /var/log/redis/redis-server.log
 
 ## Networking
-The Vagrant file maps the following ports from the guest machine to the host machine.  From your host machine, test the following URL in a browser: http://localhost:8080
+The Vagrant file maps the following ports from the guest machine to the host machine.  From your host machine, test the following URL in a browser: http://localhost:8000
 
 The Catopia website should be displayed.
 

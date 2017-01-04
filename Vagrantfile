@@ -83,6 +83,7 @@ Vagrant.configure("2") do |config|
     apt-get -y install redis-server=2:3.0.6-1
     echo "include /vagrant/redis-overrides.conf" >> /etc/redis/redis.conf
 
+    cd /vagrant
     ./run-all.sh
 
   SHELL
