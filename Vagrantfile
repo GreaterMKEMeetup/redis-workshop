@@ -25,13 +25,13 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
 
   # Front End - Python File Server
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.network "forwarded_port", guest: 80, host: 8000
 
   # Back End - Spring Boot App
   config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   # Redis Server
-  config.vm.network "forwarded_port", guest: 6379, host: 6379
+  config.vm.network "forwarded_port", guest: 6397, host: 6397
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -76,8 +76,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     
-    apt-get -y install python=2.7.11-1
-    
+    apt-get -y install nginx=1.10.0-0ubuntu0.16.04.4
+    ln -s /vagrant/nginx-proxy.conf /etc/nginx/sites-enabled/nginx-proxy.conf
+
     apt-get -y install openjdk-8-jdk
     
     apt-get -y install redis-server=2:3.0.6-1
@@ -85,6 +86,10 @@ Vagrant.configure("2") do |config|
 
     cd /vagrant
     ./run-all.sh
+
+    sleep 5
+
+    cat /vagrant/initial-data.txt | redis-cli --pipe
 
   SHELL
 end

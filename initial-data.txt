@@ -1,0 +1,1 @@
+SET banner "\"Welcome!  This banner message is coming from Redis!\""

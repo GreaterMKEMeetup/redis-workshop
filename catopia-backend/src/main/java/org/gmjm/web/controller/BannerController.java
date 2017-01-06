@@ -24,29 +24,25 @@ public class BannerController
 {
 
 	@Resource(name="appRedisTemplate")
-	ValueOperations<String,Banner> valueOperations;
+	ValueOperations<String,String> valueOperations;
 
 
 
 
-	@RequestMapping(path="/banner",method=GET)
-	public Banner getBaner(HttpServletResponse respone) throws IOException
+	@RequestMapping(path="/banner",method=GET, headers="Accept=text/plain")
+	public String getBanner(HttpServletResponse respone) throws IOException
 	{
-		 Banner banner = valueOperations.get("banner");
+		 String banner = valueOperations.get("banner");
 
 		 Long remainingTime = valueOperations.getOperations().getExpire("banner");
-
-		 if(banner != null && remainingTime > -1) {
-		 	banner.expiresIn = remainingTime;
-		 }
 
 		 return banner;
 	}
 
 	@RequestMapping(path="/banner",method=PUT)
-	public void putBanner(@RequestBody  Banner banner) throws IOException
+	public void putBanner(@RequestBody  String banner) throws IOException
 	{
-		valueOperations.set("banner",banner,banner.expiresIn, TimeUnit.SECONDS);
+		valueOperations.set("banner",banner,60, TimeUnit.SECONDS);
 	}
 
 }
