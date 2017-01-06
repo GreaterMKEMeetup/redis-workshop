@@ -14,6 +14,8 @@ To keep development environments consistent, this workshop uses Vagrant.  Vagran
 * Vagrant >= 1.8.6
 * Java code editor of choice.
 
+>:warning: Be sure to install Vagrant AND Virtualbox.  Virtualbox is the VM provider for Vagrant.  A common mistake can be to only install Vagrant.
+
 # Setup
 
 Pull the project code, and run Vagrant.  This will take awhile as it downloads the ubuntu/xenial64 image, Java, and Redis.
