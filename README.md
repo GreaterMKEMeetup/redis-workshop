@@ -18,7 +18,7 @@ To keep development environments consistent, this workshop uses Vagrant.  Vagran
 
 # Setup
 
-Pull the project code, and run Vagrant.  This will take awhile as it downloads the ubuntu/xenial64 image, Java, and Redis.
+Pull the project code, and run Vagrant.  This will take awhile as it downloads the ubuntu/xenial64 image, Java, Nginx, and Redis.
 ```bash
 $ cd ~/workspace
 $ git clone https://github.com/GreaterMKEMeetup/redis-workshop.git
@@ -28,6 +28,16 @@ $ vagrant up
 Note:  Vagrant automatically syncs the directory where the Vagrant file is on the host machine with the guest machine's /vagrant directory.  All run, kill, and status scripts must be run from within the virtual machine.
 
 ## Verify
+
+Go to your browser, and visit http://localhost:8000/
+
+![Catopia Snapsot](http://i.imgur.com/jyCegkh.png)
+
+The banner text was loaded and served by Redis.  Congrats, the stack is working!
+
+### Troubleshoot
+If you were unable to verify the stack is working, start here.
+
 Log into the virtual machine, and run the stack-status.sh script.  You should see the following.
 Note, the java process may take a minute to come up, as it must download all the dependencies before it starts.
 
@@ -41,14 +51,16 @@ tcp        0      0 0.0.0.0:8000            0.0.0.0:*               LISTEN      
 tcp6       0      0 :::8080                 :::*                    LISTEN      9904/java
 ```
 If any of the above ports don't have a service listening on them, something went wrong.  Check the following logs:
-/vagrant/frontend.log
 /vagrant/backend.log
+/var/log/nginx/error.log
 /var/log/redis/redis-server.log
 
 ## Networking
-The Vagrant file maps the following ports from the guest machine to the host machine.  From your host machine, test the following URL in a browser: http://localhost:8000
+The Vagrant file maps the following ports from the guest machine to the host machine.
 
-The Catopia website should be displayed.
+Proxy: localhost:8000
+Backend: localhost:8080
+Redis: localhost:6397
 
 ----
 # Good Job!
