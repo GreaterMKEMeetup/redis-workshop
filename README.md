@@ -58,9 +58,9 @@ If any of the above ports don't have a service listening on them, something went
 ## Networking
 The Vagrant file maps the following ports from the guest machine to the host machine.
 
-Proxy: localhost:8000
-Backend: localhost:8080
-Redis: localhost:6397
+Proxy: localhost:8000  
+Backend: localhost:8080  
+Redis: localhost:6397  
 
 ----
 # Good Job!
