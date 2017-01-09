@@ -2,7 +2,7 @@
 
 Workshop setup instructuiosn for the [January, 19th 2017 Greater Milwaukee Java Meetup](https://www.meetup.com/Greater-Milwaukee-Java-Meetup/events/235904449/).
 
-[Presentation & Workshop Guide](https://docs.google.com/presentation/d/156sNIo9jzVETF_gnxzWMOueuHzBZcvhA8t3X78C397M/edit?usp=sharing)
+[Presentation & Workshop Guide](https://docs.google.com/presentation/d/156sNIo9jzVETF_gnxzWMOueuHzBZcvhA8t3X78C397M/edit?usp=sharing) _in progress_
 
 # Prerequisites
 
