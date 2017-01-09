@@ -10,8 +10,8 @@ To keep development environments consistent, this workshop uses Vagrant.  Vagran
 
 * Roughly 8 GB of free disk space
 * Git
-* Virtualbox >= v5.1.8
-* Vagrant >= 1.8.6
+* [Virtualbox](https://www.virtualbox.org/wiki/Downloads) >= v5.1.8
+* [Vagrant](https://www.vagrantup.com/downloads.html) >= 1.8.6
 * Java code editor of choice.
 
 >:warning: Be sure to install Vagrant AND Virtualbox.  Virtualbox is the VM provider for Vagrant.  A common mistake can be to only install Vagrant.
