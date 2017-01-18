@@ -33,6 +33,9 @@ Vagrant.configure("2") do |config|
   # Redis Server
   config.vm.network "forwarded_port", guest: 6397, host: 6397
 
+  # Debug Port
+  config.vm.network "forwarded_port", guest: 5005, host: 5005
+
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
