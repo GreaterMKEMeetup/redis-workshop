@@ -1,63 +1,75 @@
-var addAlert = function(message) {
-	if($("#banner-msg").length == 0) {
+window.onload = function() {
+	var loggedInUser = 'aglassman';
+
+	$(".alert").alert();
+	
+	$(".notifications").click(function(){
+		getNotifications(loggedInUser,function(notifications){
+			setNotificationsList(notifications);
+			$('#notifications-modal').modal('show'); 
+		});
+	});
+
+	//Initial Run
+	getNotificationCount(loggedInUser,setNotificationCounts);
+	getBanner(addAlert);
+
+	//Run every 5 seconds
+	setInterval(getBanner.bind(null,addAlert),5000);
+	setInterval(getNotificationCount.bind(null,loggedInUser,setNotificationCounts),5000);
+}
+
+/**
+ * UI Modification functions
+**/
+var addAlert = function(bannerText) {
+
+	if(!bannerText || bannerText.length == 0) {
+		$('#banner').empty();
+	} else if($("#banner-msg").length == 0) {
 	    $('#banner').append(
 	        '<div id="banner-msg" class="alert alert-warning alert-dismissible show" role="alert">'+
 			  '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 			    '<span aria-hidden="true">&times;</span>'+
 			  '</button><span class="banner-text">' +
-			  message +
+			  bannerText +
 			'</span></div>');
 	} else {
-		$("#banner-msg , .banner-text").text(message);
+		$("#banner-msg , .banner-text").text(bannerText);
 	}
 };
 
-var setNotifications = function(numberOfNotifications) {
-	$(".notification-count").text(numberOfNotifications);
+var setNotificationCounts = function(numberOfNotifications) {
+	if(numberOfNotifications < 1) {
+		$(".notification-count").text();
+	} else {
+		$(".notification-count").text(numberOfNotifications);
+	}
 };
 
-
-
-var showBanner = function() {
-	console.log("checking banner");
-	$.ajax({
-	     method: "GET",
-	     dataType: "text",
-	     url: "/backend/banner",
-	     
-	     success: function(resp){
-	       addAlert(resp);
-	     },
-	     error: function(XMLHttpRequest, textStatus, errorThrown) { 
-	        console.log(textStatus);
-	        console.log(errorThrown); 
-	    }
+var setNotificationsList = function(notifications) {
+	$(".notifications-list").empty();
+	notifications.forEach(function(notification){
+		$(".notifications-list").append("<li>").append(notification);
 	});
-}
+};
 
-var checkNotifications = function() {
-	console.log("checking notifications");
-	$.ajax({
-	     method: "GET",
-	     url: "/backend/notification-count?user=aglassman",
-	     
-	     success: function(resp){
-	       if(resp) {
-	       	setNotifications(resp.count);
-	       } else {
-	       	setNotifications(null);
-	       }
-	     },
-	     error: function(XMLHttpRequest, textStatus, errorThrown) { 
-	        console.log(textStatus);
-	        console.log(errorThrown); 
-	    }
-
+/**
+ * Banner endpoint functions
+**/
+var getBanner = function(bannerCallback) {
+	console.log("getting banner");
+	$.get('/backend/banner', 
+	    function(bannerText){
+	         bannerCallback(bannerText);
+	}).fail(function(){
+	      console.log("could not retrieve banner");
 	});
+
 }
 
 var putBanner = function(bannerText) {
-	console.log("checking notifications");
+	console.log("putting banner");
 	$.ajax({
 	    type: "PUT",
 	    url: "/backend/banner",
@@ -74,17 +86,47 @@ var putBanner = function(bannerText) {
 	});
 }
 
-var postNotification = function(username,text) {
-	console.log("checking notifications");
+/**
+ * notification endpoint functions
+**/
+var getNotificationCount = function(userId,notificationCountCallback) {
+	console.log("getting notification count for user: " + userId);
+	
+	$.get('/backend/notifications', { countOnly: true, userId : userId}, 
+	    function(notificationCount){
+	         notificationCountCallback(notificationCount);
+	}).fail(function(){
+	      console.log("could not retrieve notifications for: " + userId);
+	});
+}
+
+var getNotifications = function(userId, notificationsCallback) {
+	console.log("getting notifications for user: " + userId);
+
+	$.get('/backend/notifications', { userId: userId}, 
+	    function(notifications){
+	         notificationsCallback(notifications);
+	}).fail(function(){
+	      console.log("error");
+	});
+}
+
+var postNotification = function(userId, text) {
+	console.log("posting notification to user: " + userId + " message: " + text);
+
+	$.post('/backend/notifications', { userId: userId, text : text}, 
+	    function(returnedData){
+	         console.log(returnedData);
+	}).fail(function(){
+	      console.log("error");
+	});
+}
+
+var deleteNotification = function(userId,index) {
+	console.log("deleting message: " + index + " for user: " + userId);
 	$.ajax({
-	    type: "POST",
-	    url: "/backend/notification-count",
-	    // The key needs to match your method's input parameter (case-sensitive).
-	    data: JSON.stringify({ 
-	    	username: username,
-	    	text: text}),
-	    contentType: "application/json; charset=utf-8",
-	    dataType: "json",
+	    type: "DELETE",
+	    url: "/backend/notifications" + '?' + $.param({"userId": userId, "index" : index}),
 	    success: function(data){
 	    	console.log(data);
 	    },
@@ -96,8 +138,3 @@ var postNotification = function(username,text) {
 
 
 
-window.onload = function() {
-	$(".alert").alert();
-	setInterval(showBanner,5000);
-	//setInterval(checkNotifications,5000);
-}

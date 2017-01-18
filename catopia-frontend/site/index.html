@@ -41,7 +41,7 @@
                         <a href="#">Cart</a>
                     </li>
                     <li>
-                        <a href="#">Notifications</a>
+                        <a href="#" class="notifications ">Notifications<span class="notification-count badge red"></span></a>
                     </li>
                 </ul>
             </div>
@@ -58,7 +58,7 @@
                 <p class="lead">Catopia</p>
                 <div class="list-group">
                     <a href="#" class="list-group-item">Cart<span class="cart-count badge green"></span></a>
-                    <a href="#" class="list-group-item">Notifications<span class="notification-count badge red"></span></a>
+                    <a href="#" class="notifications list-group-item" >Notifications<span class="notification-count badge red"></span></a>
                 </div>
             </div>
 
@@ -178,6 +178,25 @@
             </div>
 
         </div>
+
+        <!-- Modal -->
+          <div class="modal fade" id="notifications-modal" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                  <ol class="notifications-list">
+                  </ol>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
     </div>
     <!-- /.container -->
