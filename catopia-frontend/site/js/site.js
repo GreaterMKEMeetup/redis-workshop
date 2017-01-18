@@ -11,12 +11,12 @@ window.onload = function() {
 	});
 
 	//Initial Run
-	getNotificationCount(loggedInUser,setNotificationCounts);
 	getBanner(addAlert);
+	//getNotificationCount(loggedInUser,setNotificationCounts);
 
 	//Run every 5 seconds
 	setInterval(getBanner.bind(null,addAlert),5000);
-	setInterval(getNotificationCount.bind(null,loggedInUser,setNotificationCounts),5000);
+	//setInterval(getNotificationCount.bind(null,loggedInUser,setNotificationCounts),5000);
 }
 
 /**
