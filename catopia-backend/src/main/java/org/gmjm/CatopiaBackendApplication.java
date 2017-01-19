@@ -1,7 +1,12 @@
 package org.gmjm;
 
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +29,12 @@ public class CatopiaBackendApplication {
 		return new JedisConnectionFactory();
 	}
 
+	@Bean
+	RedissonClient redissonClient(RedisProperties redisProperties) {
+		Config config = new Config();
+		config.useSingleServer().setAddress(redisProperties.getHost() + ":" + redisProperties.getPort());
+		return Redisson.create(config);
+	}
 
 	@Bean
 	RedisTemplate appRedisTemplate() {
