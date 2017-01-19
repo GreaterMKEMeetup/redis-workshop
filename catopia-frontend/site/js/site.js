@@ -12,11 +12,11 @@ window.onload = function() {
 
 	//Initial Run
 	getBanner(addAlert);
-	//getNotificationCount(loggedInUser,setNotificationCounts);
+	getNotificationCount(loggedInUser,setNotificationCounts);
 
 	//Run every 5 seconds
 	setInterval(getBanner.bind(null,addAlert),5000);
-	//setInterval(getNotificationCount.bind(null,loggedInUser,setNotificationCounts),5000);
+	setInterval(getNotificationCount.bind(null,loggedInUser,setNotificationCounts),5000);
 }
 
 /**

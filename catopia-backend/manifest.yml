@@ -1,0 +1,9 @@
+---
+applications:
+- name: catopia-backend
+  buildpack: java_buildpack
+  path: build/libs/catopia-backend-0.0.1-SNAPSHOT.jar
+  memory: 1024M
+  instances: 1
+  services:
+  - catopia-redis
