@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,15 +21,26 @@ public class NotificationController
 {
 
 	public static final String NOTIFICATIONS = "notifications:";
-	public static final long MAX_NOTIFICATIONS = 100L;
+	public static final long MAX_NOTIFICATIONS = 10L;
 
 	@Resource(name="appRedisTemplate")
-	ListOperations<String,String> listOperations;
+	RedisTemplate<String,String> redisTemplate;
+
+	private BoundListOperations<String,String> getList(String userId) {
+
+		if(StringUtils.isEmpty(userId)) {
+			throw new IllegalArgumentException("userId cannot be null, or empty");
+		} else if( userId.length() > 30) {
+			throw new IllegalArgumentException("userId exceeded max length of 30");
+		}
+
+		return redisTemplate.boundListOps(NOTIFICATIONS + userId);
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<String> usersWithMessages() {
 
-		return listOperations.getOperations().keys(NOTIFICATIONS + "*")
+		return redisTemplate.keys(NOTIFICATIONS + "*")
 			.stream()
 			.map(s -> s.substring(s.indexOf(':') + 1))
 			.collect(Collectors.toList());
@@ -37,21 +50,23 @@ public class NotificationController
 	@RequestMapping(method = RequestMethod.GET, params = {"userId","countOnly"})
 	public String notificationCountForUser(@RequestParam String userId, @RequestParam Boolean countOnly) {
 
-		return listOperations.size(getKey(userId)).toString();
+		return getList(userId).size().toString();
 
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = {"userId"})
 	public List<String> notificationsForUser(@RequestParam String userId) {
 
-		return listOperations.range(getKey(userId),0,MAX_NOTIFICATIONS);
+		return getList(userId).range(0,-1);
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public void addNotificationForUser(@RequestParam String userId, @RequestParam String text) {
 
-		listOperations.leftPush(getKey(userId),text);
+		BoundListOperations<String,String> boundList = getList(userId);
+		boundList.leftPush(text);
+		boundList.trim(0,MAX_NOTIFICATIONS -1);
 
 	}
 
@@ -60,26 +75,17 @@ public class NotificationController
 
 		try {
 			//Lists don't allow removal by index, but this is a nice trick.
+			BoundListOperations<String,String> boundList = getList(userId);
 			String uuid = UUID.randomUUID().toString();
-			listOperations.set(getKey(userId), index, uuid);
-			listOperations.remove(getKey(userId), 1, uuid);
+			boundList.set(index, uuid);
+			boundList.remove( 1, uuid);
+
 		} catch (InvalidDataAccessApiUsageException e) {
 			throw new IllegalArgumentException("Key does not exist, or index was out of bounds.");
 		}
 
 	}
 
-
-	private static String getKey(String userId) {
-
-		if(StringUtils.isEmpty(userId)) {
-			throw new IllegalArgumentException("userId cannot be null, or empty");
-		} else if( userId.length() > 30) {
-			throw new IllegalArgumentException("userId exceeded max length of 30");
-		}
-
-		return NOTIFICATIONS + userId;
-	}
 
 }
 
